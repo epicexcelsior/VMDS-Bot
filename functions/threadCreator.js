@@ -46,7 +46,7 @@ function createThread(message) {
                     } catch (error) {
                         const response = await message.channel.send({ content: `<a:aWrong:978722165933359174> I was unable to create a thread for your ${chnl_type}.` });
                         console.log('Sent thread creation error message.');
-                        console.error();
+                        console.error(error);
                         setTimeout(() => response.delete(), 7500);
                     };
                 }, 500);
