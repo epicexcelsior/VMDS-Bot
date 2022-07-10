@@ -9,6 +9,6 @@ module.exports = {
         for (const elem of activeThreads.threads.values()) {
             await elem.edit( {archived: true} )
         };
-        await interaction.channel.send(`<@${interaction.user.id}> All threads have been deleted.`);
+        await interaction.channel.send(`<@${interaction.user.id}> All threads have been deleted!`);
     }
 };
