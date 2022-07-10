@@ -40,7 +40,6 @@ function createThread(message) {
                         if (react) {
                             message.react('👍');
                             message.react('👎');
-                            message.react('😁');
                         };
                         console.log(`Thread for ${message.author.tag} created in #${message.channel.name}`);
         
