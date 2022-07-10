@@ -3,7 +3,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('archive-threads')
-		.setDescription('Arvhives all threads'),
+		.setDescription('Archives all threads'),
 	async execute(interaction) {
         const activeThreads = await interaction.guild.channels.fetchActiveThreads();
         for (const elem of activeThreads.threads.values()) {
