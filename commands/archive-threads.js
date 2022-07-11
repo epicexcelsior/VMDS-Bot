@@ -13,7 +13,7 @@ module.exports = {
             await interaction.channel.send(`<@${interaction.user.id}> All threads have been archived!`);
         } catch (error) {
             await interaction.reply({content: '<a:aWrong:978722165933359174> An error occurred.', ephemeral: true});
-            console.error();
+            console.error(error);
         }
     }
 };
