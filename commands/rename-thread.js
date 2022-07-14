@@ -25,11 +25,11 @@ module.exports = {
 					new_name = new_name.slice(0, 97) + '...';
 				};
 
-				await interaction.reply({content: `<a:aRight:978722165832695849> Thread renaming initiated. It may take a few minutes depending on rate limiting.`, ephemeral: true})
+				await interaction.reply({content: `<a:aRight:978722165832695849> Thread renaming initiated. It may take a while depending on rate limiting.`, ephemeral: true})
 					.then(console.log(`${interaction.user.tag} renamed thread "${old_name}" to "${new_name}"`))
 					.catch(console.error());
 
-				interaction.channel.send(`<@${interaction.user.id}> initiated thread renaming: \`${old_name}\` -> \`${new_name}\``);
+				interaction.channel.send(`<@${interaction.user.id}> initiated thread renaming: \`${old_name}\` → \`${new_name}\``);
 				await interaction.channel.edit({ name: new_name });
 
 			} else {
