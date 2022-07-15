@@ -7,14 +7,17 @@ module.exports = {
 	async execute(interaction) {
         try {
             const activeThreads = await interaction.guild.channels.fetchActiveThreads();
-            const userMessage = await interaction.channel.send('Archiving threads...');
+            await interaction.deferReply({ ephemeral: true })
+
             for (const elem of activeThreads.threads.values()) {
                 await elem.edit( {archived: true} )
-                    .catch(console.error(error));
+                    .then(console.log(`${interaction.user.tag} archived thread: ${elem.name}`))
+                    .catch((error) => console.error(error))
             };
-            await userMessage.edit('✅ Successfully archived threads.')
+            
+            await interaction.editReply('<a:aRight:978722165832695849> Successfully archived threads.');
         } catch (error) {
-            await interaction.reply({content: '<a:aWrong:978722165933359174> An error occurred.', ephemeral: true});
+            await interaction.editReply({content: '<a:aWrong:978722165933359174> An error occurred.', ephemeral: true});
             console.error(error);
         }
     }
