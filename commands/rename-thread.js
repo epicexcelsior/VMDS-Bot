@@ -5,7 +5,7 @@ module.exports = {
 		.setName('rename-thread')
 		.setDescription('Rename a suggestion/question thread that you created.')
 		.addStringOption(option =>
-			option.setName('new name')
+			option.setName('new_name')
 				.setDescription('The new name of the thread')
 				.setRequired(true)),
 	async execute(interaction) {
@@ -19,7 +19,7 @@ module.exports = {
 
 			if (threadStartMsg.author.id === interaction.user.id) {
 				const old_name = interaction.channel.name;
-				let new_name = interaction.options.getString('new name');
+				let new_name = interaction.options.getString('new_name');
 
 				if (new_name.length >= 100) {
 					new_name = new_name.slice(0, 97) + '...';
