@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const { MessageActionRow, MessageMenu, MessageMenuOption, MessageSelectMenu } = require('discord.js');
 const { roleData } = require('../config.js')
 
