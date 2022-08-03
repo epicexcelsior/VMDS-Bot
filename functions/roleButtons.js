@@ -1,3 +1,13 @@
+//const { buttonData, validButtonIds } = require('../index.js');
+const { roleData } = require('../config.js');
+const { ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, ButtonStyle } = require('discord.js');
+const buttonData = [];
+const validButtonIds = [];
+for (let i in roleData) {
+	buttonData.push(roleData[i].button)
+	validButtonIds.push(roleData[i].button.customId)
+};
+
 async function makeButtons (interaction) {
     if (!(validButtonIds.includes(interaction.customId))) return;
 
@@ -40,4 +50,6 @@ async function makeButtons (interaction) {
         content: roleData[interaction.customId].menu.message,
         components: [selectMenuRow, buttonRow]
     });
-}
+};
+
+module.exports = {makeButtons}

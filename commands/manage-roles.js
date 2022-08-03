@@ -18,7 +18,7 @@ for (let i in roleData) {
 
 module.exports = {
 	data: new SlashCommandBuilder()
-		.setName('test')
+		.setName('manage-roles')
         .setDescription('Testing multi-category role selection'),
 	async execute(interaction) {
         const row = new ActionRowBuilder()
