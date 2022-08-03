@@ -6,7 +6,6 @@ const { makeButtons } = require('./functions/roleButtons.js');
 const { createRoleMenu } = require('./functions/roleMenus.js');
 const dotenv = require('dotenv');
 const { clientId, logChannelId, autoRoleChannelId, roleManagerButton } = require('./config.js');
-const { roleButton } = require('./example.config.js');
 
 dotenv.config();
 
