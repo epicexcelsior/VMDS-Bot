@@ -42,7 +42,7 @@ async function makeButtons (interaction) {
                 .setCustomId(buttonData[i].customId)
                 .setLabel(buttonData[i].label)
                 .setEmoji(buttonData[i].emoji)
-                .setStyle(ButtonStyle.Primary),
+                .setStyle(buttonData[i].style),
         );
     }
 

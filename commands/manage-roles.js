@@ -28,7 +28,7 @@ module.exports = {
 					.setCustomId(buttonData[i].customId)
 					.setLabel(buttonData[i].label)
                     .setEmoji(buttonData[i].emoji)
-					.setStyle(ButtonStyle.Primary),
+					.setStyle(buttonData[i].style),
 			);
         }
         await interaction.reply({ content: '**Choose a role category**', components: [row], ephemeral: true});

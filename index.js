@@ -5,7 +5,8 @@ const { createThread } = require('./functions/threadCreator.js');
 const { makeButtons } = require('./functions/roleButtons.js');
 const { createRoleMenu } = require('./functions/roleMenus.js');
 const dotenv = require('dotenv');
-const { clientId, logChannelId, autoRoleChannelId } = require('./config.js');
+const { clientId, logChannelId, autoRoleChannelId, roleManagerButton } = require('./config.js');
+const { roleButton } = require('./example.config.js');
 
 dotenv.config();
 
@@ -81,9 +82,9 @@ client.on('messageCreate', async message => {
 			.addComponents(
 				new ButtonBuilder()
 					.setCustomId('manage-roles')
-					.setLabel('Manage Roles')
-					.setEmoji('🗝')
-					.setStyle(ButtonStyle.Success),
+					.setLabel(roleManagerButton.label)
+					.setEmoji(roleManagerButton.emoji)
+					.setStyle(roleManagerButton.style),
 			);
 		await message.edit({ components: [roleButton] })
 	};
