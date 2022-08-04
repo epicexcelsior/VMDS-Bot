@@ -7,7 +7,7 @@ module.exports = {
     autoRoleChannelId: "",
 
     roleManagerButton: {
-        label: 'Manage Roles',
+        label: 'Get Roles',
         style: 3,
         emoji: '⚙'
     },

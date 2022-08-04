@@ -1,0 +1,1 @@
+This bot manages roles, so remember to put the bot's role above all other roles.

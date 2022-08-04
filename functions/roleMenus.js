@@ -54,7 +54,7 @@ async function createRoleMenu (interaction) {
         };
         if (addList.length === 0) { addList = ['none'] };
         if (removeList.length === 0) { removeList = ['none'] };
-        await logChannel.send(`**Updated roles for ${interaction.user.tag} (\`${interaction.user.id}\`) through role manager:**\n<:add:1004185816282701835> Added ${addList.join(', ')}\n<:remove:1004185817259978825> Removed ${removeList.join(', ')}`);
+        await logChannel.send(`**Updated roles for ${interaction.user.tag} (\`${interaction.user.id}\`) through role manager:**\n<:add:1004649196533600326> Added ${addList.join(', ')}\n<:remove:1004641620253229108> Removed ${removeList.join(', ')}`);
     } catch (error) {
         console.error(error);
         await logChannel.send(`<@295227446981033984> An error occurred.\n\`\`\`\n${error}\`\`\``);

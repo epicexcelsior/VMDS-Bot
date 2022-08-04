@@ -38,55 +38,65 @@ for (const file of eventFiles) {
 
 
 client.on('interactionCreate', async interaction => {
-	const logChannel = await client.channels.fetch(logChannelId);
+	try{
+		const logChannel = await client.channels.fetch(logChannelId);
 
-	if (interaction.isCommand()) {
-		const command = client.commands.get(interaction.commandName);
+		if (interaction.isCommand()) {
+			const command = client.commands.get(interaction.commandName);
 
-		try {
-			await command.execute(interaction);
-		} catch (error) {
-			console.error(error);
-			await interaction.reply({ content: '<a:aWrong:978722165933359174> There was an error while executing this command.\nPlease contact <@295227446981033984> with the error details.', ephemeral: true });
-			await logChannel.send(`<@295227446981033984> An error occurred.\n\`\`\`\n${error}\`\`\``)
+			try {
+				await command.execute(interaction);
+			} catch (error) {
+				console.error(error);
+				await interaction.reply({ content: '<a:aWrong:978722165933359174> There was an error while executing this command.\nPlease contact <@295227446981033984> with the error details.', ephemeral: true });
+				await logChannel.send(`<@295227446981033984> A command error occurred.\n\`\`\`\n${error}\`\`\``)
+			};
 		};
-	};
 
 
-	if (interaction.isButton()) {
-		makeButtons(interaction);
+		if (interaction.isButton()) {
+			makeButtons(interaction);
 
-		if (interaction.customId === 'manage-roles') {
-			client.commands.get('manage-roles').execute(interaction)
-			 	.catch(() => console.error())
+			if (interaction.customId === 'manage-roles') {
+				client.commands.get('manage-roles').execute(interaction)
+					.catch(() => console.error())
+			};
 		};
-	};
 
-	if (interaction.isSelectMenu()) {
-		createRoleMenu(interaction);
-	};
+		if (interaction.isSelectMenu()) {
+			createRoleMenu(interaction);
+		};
+	} catch (error) {
+		console.error(error);
+		await logChannel.send(`<@295227446981033984> An interaction error occurred.\n\`\`\`\n${error}\`\`\``)
+	}
 });
 
 
 client.on('messageCreate', async message => {
-	createThread(message);
+	try{
+		createThread(message);
 
-	if (message.content === 'test') {
-		const sendChannel = await message.guild.channels.fetch('1004280176961658982'); //
-		await sendChannel.send('Message');
-		}
+		if (message.content === 'test') {
+			const sendChannel = await message.guild.channels.fetch('1004467208535150687'); //
+			await sendChannel.send('Message');
+			}
 
-	if ((message.editable) && (message.channel.id === autoRoleChannelId) && (message.author.id === clientId)) {
-		const roleButton = new ActionRowBuilder()
-			.addComponents(
-				new ButtonBuilder()
-					.setCustomId('manage-roles')
-					.setLabel(roleManagerButton.label)
-					.setEmoji(roleManagerButton.emoji)
-					.setStyle(roleManagerButton.style),
-			);
-		await message.edit({ components: [roleButton] })
+		if ((message.editable) && (message.channel.id === autoRoleChannelId) && (message.author.id === clientId)) {
+			const roleButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId('manage-roles')
+						.setLabel(roleManagerButton.label)
+						.setEmoji(roleManagerButton.emoji)
+						.setStyle(roleManagerButton.style),
+				);
+			await message.edit({ components: [roleButton] })
+		};
+	} catch (error) {
+		console.error(error);
+		await logChannel.send(`<@295227446981033984> A message error occurred.\n\`\`\`\n${error}\`\`\``);
 	};
-});
+});0
 
 client.login(process.env.TOKEN);
