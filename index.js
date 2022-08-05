@@ -59,7 +59,7 @@ client.on('interactionCreate', async interaction => {
 
 			if (interaction.customId === 'manage-roles') {
 				client.commands.get('manage-roles').execute(interaction)
-					.catch(() => console.error())
+					.catch((error) => console.error(error))
 			};
 		};
 
@@ -77,9 +77,17 @@ client.on('messageCreate', async message => {
 	try{
 		createThread(message);
 
-		if (message.content === 'test') {
-			const sendChannel = await message.guild.channels.fetch('1004467208535150687'); //
-			await sendChannel.send('Message');
+		if ((message.content.toLowerCase() === '!rolemanager') && (message.member.roles.cache.has('1004467207914389520'))) {
+			const roleButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId('manage-roles')
+						.setLabel(roleManagerButton.label)
+						.setEmoji(roleManagerButton.emoji)
+						.setStyle(roleManagerButton.style),
+				);
+			await message.channel.send({ components: [roleButton] });
+			await message.delete();
 			}
 
 		if ((message.editable) && (message.channel.id === autoRoleChannelId) && (message.author.id === clientId)) {

@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, ButtonBuilder, ActionRowBuilder } = require('discord.js');
 const { roleData } = require('../config.js')
 
 const buttonData = []
