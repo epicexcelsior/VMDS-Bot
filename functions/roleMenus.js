@@ -1,4 +1,4 @@
-const { roleData, logChannelId } = require('../config.js');
+const { roleData, logChannelId, roleLogging } = require('../config.js');
 const validSelectMenuIds = [];
 for (let i in roleData) {
 	validSelectMenuIds.push(roleData[i].button.customId + '-SelectMenu')
@@ -52,9 +52,11 @@ async function createRoleMenu (interaction) {
                     });
             };
         };
-        if (addList.length === 0) { addList = ['none'] };
-        if (removeList.length === 0) { removeList = ['none'] };
-        await logChannel.send(`**Updated roles for ${interaction.user.tag} (\`${interaction.user.id}\`) through role manager:**\n<:add:1004649196533600326> Added ${addList.join(', ')}\n<:remove:1004641620253229108> Removed ${removeList.join(', ')}`);
+        if (roleLogging) {
+            if (addList.length === 0) { addList = ['none'] };
+            if (removeList.length === 0) { removeList = ['none'] };
+            await logChannel.send(`**Updated roles for ${interaction.user.tag} (\`${interaction.user.id}\`) through role manager:**\n<:add:1004649196533600326> Added ${addList.join(', ')}\n<:remove:1004641620253229108> Removed ${removeList.join(', ')}`);
+        };
     } catch (error) {
         console.error(error);
         await logChannel.send(`<@295227446981033984> An error occurred.\n\`\`\`\n${error}\`\`\``);
