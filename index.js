@@ -1,13 +1,15 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, Intents, Message, MessageFlags } = require('discord.js');
-const { createThread } = require('./functions/threadCreator.js')
+const { Client, Collection, GatewayIntentBits, Message, MessageFlags, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, ButtonStyle, SlashCommandSubcommandGroupBuilder } = require('discord.js');
+const { createThread } = require('./functions/threadCreator.js');
+const { makeButtons } = require('./functions/roleButtons.js');
+const { createRoleMenu } = require('./functions/roleMenus.js');
 const dotenv = require('dotenv');
+const { clientId, logChannelId, autoRoleChannelId, roleManagerButton } = require('./config.js');
 
 dotenv.config();
 
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
-
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
 // Retrieve commands
 client.commands = new Collection();
@@ -36,22 +38,73 @@ for (const file of eventFiles) {
 
 
 client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
+	try{
+		const logChannel = await client.channels.fetch(logChannelId);
 
-	const command = client.commands.get(interaction.commandName);
+		if (interaction.isCommand()) {
+			const command = client.commands.get(interaction.commandName);
 
-	if (!command) return;
-	try {
-		await command.execute(interaction);
+			try {
+				await command.execute(interaction);
+			} catch (error) {
+				console.error(error);
+				await interaction.reply({ content: '<a:aWrong:978722165933359174> There was an error while executing this command.\nPlease contact <@295227446981033984> with the error details.', ephemeral: true });
+				await logChannel.send(`<@295227446981033984> A command error occurred.\n\`\`\`\n${error}\`\`\``)
+			};
+		};
+
+
+		if (interaction.isButton()) {
+			makeButtons(interaction);
+
+			if (interaction.customId === 'manage-roles') {
+				client.commands.get('manage-roles').execute(interaction)
+					.catch((error) => console.error(error))
+			};
+		};
+
+		if (interaction.isSelectMenu()) {
+			createRoleMenu(interaction);
+		};
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: '<a:aWrong:978722165933359174> There was an error while executing this command.', ephemeral: true });
+		await logChannel.send(`<@295227446981033984> An interaction error occurred.\n\`\`\`\n${error}\`\`\``)
 	}
 });
 
 
 client.on('messageCreate', async message => {
-	createThread(message);
-});
+	try{
+		createThread(message);
+
+		if ((message.content.toLowerCase() === '!rolemanager') && (message.member.roles.cache.has('1004467207914389520'))) {
+			const roleButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId('manage-roles')
+						.setLabel(roleManagerButton.label)
+						.setEmoji(roleManagerButton.emoji)
+						.setStyle(roleManagerButton.style),
+				);
+			await message.channel.send({ components: [roleButton] });
+			await message.delete();
+			}
+
+		if ((message.editable) && (message.channel.id === autoRoleChannelId) && (message.author.id === clientId)) {
+			const roleButton = new ActionRowBuilder()
+				.addComponents(
+					new ButtonBuilder()
+						.setCustomId('manage-roles')
+						.setLabel(roleManagerButton.label)
+						.setEmoji(roleManagerButton.emoji)
+						.setStyle(roleManagerButton.style),
+				);
+			await message.edit({ components: [roleButton] })
+		};
+	} catch (error) {
+		console.error(error);
+		await logChannel.send(`<@295227446981033984> A message error occurred.\n\`\`\`\n${error}\`\`\``);
+	};
+});0
 
 client.login(process.env.TOKEN);

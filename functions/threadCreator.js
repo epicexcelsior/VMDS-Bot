@@ -1,4 +1,4 @@
-const { suggestionThreadChannels, otherThreadChannels } = require('../config.json');
+const { suggestionThreadChannels, otherThreadChannels } = require('../config.js');
 
 function createThread(message) {
     if (message.author.bot || message.content.includes('*** ***')) return
