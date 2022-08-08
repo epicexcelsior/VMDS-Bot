@@ -4,6 +4,7 @@ module.exports = {
     suggestionThreadChannels: ["", ""],
     otherThreadChannels: [""],
     logChannelId: "",
+    roleLoggins: true,
     autoRoleChannelId: "",
 
     roleManagerButton: {
