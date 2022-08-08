@@ -1,7 +1,16 @@
+const { roleData } = require('../config.js');
+const { ActionRowBuilder, ButtonBuilder, SelectMenuBuilder } = require('discord.js');
+const buttonData = [];
+const validButtonIds = [];
+for (let i in roleData) {
+	buttonData.push(roleData[i].button)
+	validButtonIds.push(roleData[i].button.customId)
+};
+
 async function makeButtons (interaction) {
     if (!(validButtonIds.includes(interaction.customId))) return;
 
-    // Parses roleData to array to later use in select menu creation
+    // Parses roleData to array to use in select menu creation
     selectMenuOptions = [];
     const categoryRoles = roleData[interaction.customId].roles;
     for (let i in categoryRoles) {
@@ -12,6 +21,13 @@ async function makeButtons (interaction) {
         };
         selectMenuOptions.push(categoryRoles[i]);
     };
+
+    // // Parses roleData to array to use in button creation
+    // const buttonComponents = [];
+    // for (let i in roleData[interaction.customId].button) {
+        // buttonComponents.push(roleData[interaction.customId].button[i]);
+    // };
+    
 
     const selectMenuRow = new ActionRowBuilder()
         .addComponents(
@@ -32,7 +48,7 @@ async function makeButtons (interaction) {
                 .setCustomId(buttonData[i].customId)
                 .setLabel(buttonData[i].label)
                 .setEmoji(buttonData[i].emoji)
-                .setStyle(ButtonStyle.Primary),
+                .setStyle(buttonData[i].style),
         );
     }
 
@@ -40,4 +56,6 @@ async function makeButtons (interaction) {
         content: roleData[interaction.customId].menu.message,
         components: [selectMenuRow, buttonRow]
     });
-}
+};
+
+module.exports = {makeButtons}
