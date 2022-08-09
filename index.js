@@ -86,7 +86,7 @@ client.on('messageCreate', async message => {
 						.setEmoji(roleManagerButton.emoji)
 						.setStyle(roleManagerButton.style),
 				);
-			await message.channel.send({ components: [roleButton] });
+			await message.channel.send({ content: roleManagerButton.content, components: [roleButton] });
 			await message.delete();
 			}
 
