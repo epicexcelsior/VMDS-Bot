@@ -10,6 +10,7 @@ module.exports = {
 
     roleManagerButton: {
         label: 'Get Roles',
+        content: '**Click the button below to manage your roles!**',
         style: 3,
         emoji: '⚙'
     },
