@@ -5,7 +5,7 @@ const { createThread } = require('./functions/threadCreator.js');
 const { makeButtons } = require('./functions/roleButtons.js');
 const { createRoleMenu } = require('./functions/roleMenus.js');
 const dotenv = require('dotenv');
-const { clientId, logChannelId, autoRoleChannelId, roleManagerButton } = require('./config.js');
+const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId } = require('./config.js');
 
 dotenv.config();
 
@@ -77,7 +77,7 @@ client.on('messageCreate', async message => {
 	try{
 		createThread(message);
 
-		if ((message.content.toLowerCase() === '!rolemanager') && (message.member.roles.cache.has('1004467207914389520'))) {
+		if ((message.content.toLowerCase() === '!rolemanager') && (message.member.roles.cache.has(modId))) {
 			const roleButton = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
