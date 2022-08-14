@@ -45,7 +45,7 @@ client.on('interactionCreate', async interaction => {
 
 		if (interaction.isCommand()) {
 			const command = client.commands.get(interaction.commandName);
-			if (!(validCommands.includes(command))) return;
+			if (!(command) || !(validCommands.includes(command.data.name))) return;
 
 			try {
 				await command.execute(interaction);
