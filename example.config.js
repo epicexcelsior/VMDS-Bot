@@ -1,12 +1,14 @@
 module.exports = {
     clientId: "",
     guildId: "",
+
     suggestionThreadChannels: ["", ""], // Thread AND thumb reactions
     otherThreadChannels: [""],
     logChannelId: "",
     roleLogging: true,
     autoRoleChannelId: "", // Messages sent by bot will have role manager button added
     modId: "", // Can use !rolemanager command
+    introChannel: "", // Members can only have one message
 
     roleManagerButton: {
         label: 'Get Roles',
