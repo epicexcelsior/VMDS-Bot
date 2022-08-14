@@ -16,9 +16,11 @@ client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
 const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
+const validCommands = [];
 for (const file of commandFiles) {
 	const filePath = path.join(commandsPath, file);
 	const command = require(filePath);
+	validCommands.push(command.data.name)
 	client.commands.set(command.data.name, command);
 }
 
@@ -43,6 +45,7 @@ client.on('interactionCreate', async interaction => {
 
 		if (interaction.isCommand()) {
 			const command = client.commands.get(interaction.commandName);
+			if (!(command) || !(validCommands.includes(command.data.name))) return;
 
 			try {
 				await command.execute(interaction);
