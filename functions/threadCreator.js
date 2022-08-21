@@ -1,60 +1,54 @@
-const { suggestionThreadChannels, otherThreadChannels } = require('../config.js');
+const { suggestionThreadChannels, otherThreadChannels, creationThreadChannels } = require('../config.js');
 
 function createThread(message) {
     if (message.author.bot || message.content.includes('*** ***')) return
 
-        if ((suggestionThreadChannels.includes(message.channel.id)) || (otherThreadChannels.includes(message.channel.id))) {
+    if (!((suggestionThreadChannels.includes(message.channel.id)) || (otherThreadChannels.includes(message.channel.id)) || (creationThreadChannels.includes(message.channel.id)))) return;
+    
+    try {        
+        let threadName = `Thread created by ${message.author.username}`;
+        let react = false;
+        if (message.content) {
+            if ((suggestionThreadChannels.includes(message.channel.id) || otherThreadChannels.includes(message.channel.id))) {
+                threadName = message.content;
+                react = true;
+            } else if (creationThreadChannels.includes(message.channel.id)) {
+                threadName = `Feedback for ${message.author.username}'s creation`;
+            };
+        };
+
+        // Truncates thread name if suggestion is longer than 100 chars                
+        if (threadName.length >= 100) {
+            threadName = threadName.slice(0, 97) + '...';
+        };
+
+        // Creates thread (waits some time before creating in case original msg is deleted)
+        setTimeout(async function(){ 
             try {
-                // Truncates thread name if suggestion is longer than 100 chars
-                let threadName = '';
-                if (message.content) {
-                    threadName = message.content;
-                } else {
-                    threadName = `Thread created by ${message.author.username}`;
+                const suggestionThread = await message.startThread({
+                    name: threadName,
+                    reason: `Auto thread for message posted by ${message.author.tag} in #${message.channel.name}`,
+                    rateLimitPerUser: 5
+                });
+
+                // Reacts to user message
+                if (react) {
+                    message.react('👍');
+                    message.react('👎');
                 };
-                
-                if (threadName.length >= 100) {
-                    threadName = threadName.slice(0, 97) + '...';
-                };
-
-                let chnl_type = ''
-                let react = false
-
-                if (suggestionThreadChannels.includes(message.channel.id)) {
-                    chnl_type = 'suggestion';
-                    react = true
-                } else {
-                    chnl_type = 'question';
-                };
-
-                // Creates thread (waits some time before creating in case original msg is deleted)
-                setTimeout(async function(){ 
-                    try {
-                        const suggestionThread = await message.startThread({
-                            name: `${threadName}`,
-                            reason: `Suggestion/question posted by ${message.author.tag} in #${message.channel.name}`,
-                            rateLimitPerUser: 5
-                        });
-
-                        // Reacts to user message
-                        if (react) {
-                            message.react('👍');
-                            message.react('👎');
-                        };
-                        console.log(`Thread for ${message.author.tag} created in #${message.channel.name}`);
-        
-                    } catch (error) {
-                        const response = await message.channel.send({ content: `<a:aWrong:978722165933359174> I was unable to create a thread for your ${chnl_type}.` });
-                        console.log('Sent thread creation error message.');
-                        console.error(error);
-                        setTimeout(() => response.delete(), 7500);
-                    };
-                }, 500);
+                console.log(`Thread for ${message.author.tag} created in #${message.channel.name}`);
 
             } catch (error) {
+                const response = await message.channel.send({ content: '<a:aWrong:978722165933359174> I was unable to create a thread for your message.' });
+                console.log('Sent thread creation error message.');
                 console.error(error);
-            }
-        }
+                setTimeout(() => response.delete(), 10000);
+            };
+        }, 500);
+
+    } catch (error) {
+        console.error(error);
     };
+};
 
 module.exports = {createThread}
