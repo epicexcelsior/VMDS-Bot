@@ -104,6 +104,17 @@ client.on('messageCreate', async message => {
 				);
 			await message.edit({ components: [roleButton] })
 		};
+
+		if ((message.channel.id === '778325316015882322' || message.channel.id === '779555811923591190')) {
+			console.log('Hello!')
+			if (message.content === 'G') {
+				message.react('💩')
+			} else if ((message.content === 'g')) {
+				message.react('834556611543564378')
+			} else if ((message.content.includes('G'))) {
+				message.react('976178632458395728')
+			};
+		};
 	} catch (error) {
 		console.error(error);
 		await logChannel.send(`<@295227446981033984> A message error occurred.\n\`\`\`\n${error}\`\`\``);
