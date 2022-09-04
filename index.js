@@ -105,8 +105,7 @@ client.on('messageCreate', async message => {
 			await message.edit({ components: [roleButton] })
 		};
 
-		if ((message.channel.id === '778325316015882322' || message.channel.id === '779555811923591190')) {
-			console.log('Hello!')
+		if ((message.channel.id === '778325316015882322') || (message.channel.id === '779555811923591190')) {
 			if (message.content === 'G') {
 				message.react('💩')
 			} else if ((message.content === 'g')) {
