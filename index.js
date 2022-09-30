@@ -105,8 +105,31 @@ client.on('messageCreate', async message => {
 			await message.edit({ components: [roleButton] })
 		};
 
+		const matches = ['G', 'Ĝ', 'Ğ', 'Ģ', 'Ġ', 'Д', 'Г']
 		if ((message.channel.id === '778325316015882322' || message.channel.id === '779555811923591190')) {
-			console.log('Hello!')
+			// To do: Create new module for G checking; Handle message editing
+
+			// switch (message.content) {
+			// 	case 'g':
+			// 		message.react('834556611543564378');
+			// 		break;
+			// 	case 'G':
+			// 	case 'Ĝ':
+			// 	case 'Ğ':
+			// 	case 'Ģ':
+			// 	case 'Ġ':
+			// 	case 'Д':
+			// 	case 'Г':
+			// 		message.react('976178632458395728');
+			// 		break;
+			// 	default:
+			// 		for (let i in matches) {
+			// 			if (message.content.includes(matches[i])) {
+			// 				message.react('976178632458395728');
+			// 			};
+			// 		};
+			// }
+			
 			if (message.content === 'G') {
 				message.react('💩')
 			} else if ((message.content === 'g')) {
