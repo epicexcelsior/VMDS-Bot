@@ -4,8 +4,9 @@ const { Client, Collection, GatewayIntentBits, Message, MessageFlags, ActionRowB
 const { createThread } = require('./functions/threadCreator.js');
 const { makeButtons } = require('./functions/roleButtons.js');
 const { createRoleMenu } = require('./functions/roleMenus.js');
+const { movieRequestModal } = require('./functions/movieRequestModal.js');
 const dotenv = require('dotenv');
-const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId } = require('./config.js');
+const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId, submissionLogChannelId } = require('./config.js');
 
 dotenv.config();
 
@@ -38,11 +39,22 @@ for (const file of eventFiles) {
 	}
 }
 
+// Used for movie night request form
+// Place holder for submission log to be edited
+let submissionLogMessage;
+function setSubmissionLogMessage(message) {
+  submissionLogMessage = message;
+}
+module.exports = {
+  submissionLogMessage,
+  setSubmissionLogMessage,
+};
+
 
 client.on('interactionCreate', async interaction => {
+	const logChannel = await client.channels.fetch(logChannelId);
 	try{
-		const logChannel = await client.channels.fetch(logChannelId);
-
+		// Slash commands
 		if (interaction.isCommand()) {
 			const command = client.commands.get(interaction.commandName);
 			if (!(command) || !(validCommands.includes(command.data.name))) return;
@@ -56,7 +68,7 @@ client.on('interactionCreate', async interaction => {
 			};
 		};
 
-
+		// Button interactions
 		if (interaction.isButton()) {
 			makeButtons(interaction);
 
@@ -64,11 +76,27 @@ client.on('interactionCreate', async interaction => {
 				client.commands.get('manage-roles').execute(interaction)
 					.catch((error) => console.error(error))
 			};
+
+			if (interaction.customId === 'movieFormButton') {
+				movieRequestModal(interaction)
+					.catch((error) => console.error(error));
+			};
 		};
 
+		// Select menu interactions
 		if (interaction.isSelectMenu()) {
 			createRoleMenu(interaction);
 		};
+
+		if (interaction.isModalSubmit()) {
+			if (interaction.customId === 'movieModal') {
+				const submission = interaction.fields.getTextInputValue('movieRequest');
+				await interaction.channel.send(`${interaction.user} submitted a movie request: ${submission}`);
+				//await this.submissionLogMessage.edit(this.submissionLogMessage.content + `\n${submission}`);
+				await submissionLogMessage.edit(submissionLogMessage.content + `\n${submission}`);
+				await interaction.reply({ content: 'Your submission was received successfully!' });
+			}
+		}
 	} catch (error) {
 		console.error(error);
 		await logChannel.send(`<@295227446981033984> An interaction error occurred.\n\`\`\`\n${error}\`\`\``)
@@ -77,6 +105,7 @@ client.on('interactionCreate', async interaction => {
 
 
 client.on('messageCreate', async message => {
+	const logChannel = await client.channels.fetch(logChannelId);
 	try{
 		createThread(message);
 
