@@ -11,13 +11,9 @@ module.exports = {
             option.setName('unix')
                 .setDescription('Deadline time (in Unix) to submit movie requests')
                 .setRequired(true)),
-	async execute(interaction) {
+	async execute(client, interaction) {
         // Defines channels
         const eventChannel = await interaction.guild.channels.fetch(eventChannelId);
-        const submissionLogChannel = await interaction.guild.channels.fetch(submissionLogChannelId);
-
-        // Sends initial submission logging message in configured channel
-        setSubmissionLogMessage(await submissionLogChannel.send("Movie night request submissions for X will be sent here:"));
 
         const formButton = new ActionRowBuilder()
         formButton.addComponents(
@@ -27,6 +23,8 @@ module.exports = {
                 .setEmoji('🍿')
                 .setStyle(ButtonStyle.Primary),
         );
+
+        client.unix = interaction.options.getInteger('unix');
 
         await eventChannel.send({ content: 'Click the button', components: [formButton]});
         await interaction.reply({ content: 'Button sent', ephemeral: true});

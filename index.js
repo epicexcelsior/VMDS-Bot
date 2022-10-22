@@ -12,6 +12,11 @@ dotenv.config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
+// variable used by movie request form later
+client.unix = Date.now();
+console.log(client.unix);
+client.formArr = [];
+
 // Retrieve commands
 client.commands = new Collection();
 const commandsPath = path.join(__dirname, 'commands');
@@ -39,17 +44,6 @@ for (const file of eventFiles) {
 	}
 }
 
-// Used for movie night request form
-// Place holder for submission log to be edited
-let submissionLogMessage;
-function setSubmissionLogMessage(message) {
-  submissionLogMessage = message;
-}
-module.exports = {
-  submissionLogMessage,
-  setSubmissionLogMessage,
-};
-
 
 client.on('interactionCreate', async interaction => {
 	const logChannel = await client.channels.fetch(logChannelId);
@@ -60,7 +54,7 @@ client.on('interactionCreate', async interaction => {
 			if (!(command) || !(validCommands.includes(command.data.name))) return;
 
 			try {
-				await command.execute(interaction);
+				await command.execute(client, interaction);
 			} catch (error) {
 				console.error(error);
 				await interaction.reply({ content: '<a:aWrong:978722165933359174> There was an error while executing this command.\nPlease contact <@295227446981033984> with the error details.', ephemeral: true });
@@ -90,10 +84,13 @@ client.on('interactionCreate', async interaction => {
 
 		if (interaction.isModalSubmit()) {
 			if (interaction.customId === 'movieModal') {
+				console.log(client.unix);
+				console.log(interaction.user.id);
+				client.formArr.push(interaction.user.id);
+				console.log(client.formArr);
+				const submissionChnl = await client.channels.fetch(submissionLogChannelId);
 				const submission = interaction.fields.getTextInputValue('movieRequest');
-				await interaction.channel.send(`${interaction.user} submitted a movie request: ${submission}`);
-				//await this.submissionLogMessage.edit(this.submissionLogMessage.content + `\n${submission}`);
-				await submissionLogMessage.edit(submissionLogMessage.content + `\n${submission}`);
+				await submissionChnl.send(`${interaction.user} submitted a movie request: ${submission}`);
 				await interaction.reply({ content: 'Your submission was received successfully!' });
 			}
 		}

@@ -10,7 +10,7 @@ async function movieRequestModal (interaction) {
     .setCustomId('movieRequest')
     .setLabel("Enter movie title")
     .setPlaceholder("Enter movie title and trailer link")
-    .setMinLength(10)
+    .setMinLength(1)
     .setMaxLength(200)
     .setRequired(true)
     .setStyle(TextInputStyle.Short);
