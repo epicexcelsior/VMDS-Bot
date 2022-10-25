@@ -20,8 +20,8 @@ module.exports = {
     },
 
     movieRequest: {
+        eventChannelId: '1007029641241956403',
         submissionLogChannelId: '1032926727036485672',
-        eventChannelId: '1030729098881945611',
         pingRole: '829855953150935093',
     },
 
