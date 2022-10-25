@@ -4,12 +4,19 @@ const { Client, Collection, GatewayIntentBits, Message, MessageFlags, ActionRowB
 const { createThread } = require('./functions/threadCreator.js');
 const { makeButtons } = require('./functions/roleButtons.js');
 const { createRoleMenu } = require('./functions/roleMenus.js');
+const { movieRequestModal } = require('./functions/movieRequestModal.js');
+let { formButton } = require('./commands/event-request')
 const dotenv = require('dotenv');
-const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId } = require('./config.js');
+const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId, movieRequest } = require('./config.js');
 
 dotenv.config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+
+// variable used by movie request form later
+client.unix = Math.floor(Date.now() / 1000);
+console.log(client.unix);
+client.formArr = [];
 
 // Retrieve commands
 client.commands = new Collection();
@@ -40,23 +47,23 @@ for (const file of eventFiles) {
 
 
 client.on('interactionCreate', async interaction => {
+	const logChannel = await client.channels.fetch(logChannelId);
 	try{
-		const logChannel = await client.channels.fetch(logChannelId);
-
+		// Slash commands
 		if (interaction.isCommand()) {
 			const command = client.commands.get(interaction.commandName);
 			if (!(command) || !(validCommands.includes(command.data.name))) return;
 
 			try {
-				await command.execute(interaction);
+				await command.execute(client, interaction);
 			} catch (error) {
 				console.error(error);
-				await interaction.reply({ content: '<a:aWrong:978722165933359174> There was an error while executing this command.\nPlease contact <@295227446981033984> with the error details.', ephemeral: true });
+				await interaction.reply({ content: '<a:aWrong:978722165933359174> There was an error while executing this command.\nPlease contact <@295227446981033984>.', ephemeral: true });
 				await logChannel.send(`<@295227446981033984> A command error occurred.\n\`\`\`\n${error}\`\`\``)
 			};
 		};
 
-
+		// Button interactions
 		if (interaction.isButton()) {
 			makeButtons(interaction);
 
@@ -64,11 +71,53 @@ client.on('interactionCreate', async interaction => {
 				client.commands.get('manage-roles').execute(interaction)
 					.catch((error) => console.error(error))
 			};
+
+			// Movie request handling
+			if (interaction.customId === 'movieFormButton') {
+				let canRequest = 1; // Can the user fill out the form? (deadline & previous submissions)
+				const timeNow = Math.floor(Date.now() / 1000);
+				console.log(`${interaction.user.tag} clicked movie form button at ${timeNow}`);
+
+				// Disable request button
+				// if current unix time is greater than end unix time
+				if (timeNow > client.unix) {
+					const msg = interaction.message.content;
+					formButton = new ActionRowBuilder();
+					formButton.addComponents(
+						new ButtonBuilder()
+							.setCustomId('movieFormButton')
+							.setLabel('Request a movie')
+							.setEmoji('🍿')
+							.setDisabled(true)
+							.setStyle(ButtonStyle.Success),
+					);
+					await interaction.update({content: `${msg}\n\nThis week's movie request form is closed. Check back soon for next week's request form.`, components: [formButton]});			
+				} else if (client.formArr.includes(interaction.user.id)) {
+					console.log(`${interaction.user.tag} has already submitted movie request`)
+					// if user id is already in array of id's, prevent them from submitting again
+					await interaction.reply({ content: '<a:aWrong:978722165933359174> It looks like you have already submitted a movie night request for this week. Please try again next week or contact a moderator if you think this is a mistake.', ephemeral: true });					
+				} else {
+					console.log(`${interaction.user.tag} was shown the movie request form at ${client.unix}`)
+					movieRequestModal(interaction)
+						.catch((error) => console.error(error));
+				}
+			};
 		};
 
+		// Select menu interactions
 		if (interaction.isSelectMenu()) {
 			createRoleMenu(interaction);
 		};
+
+		if (interaction.isModalSubmit()) {
+			if (interaction.customId === 'movieModal') {
+				const submissionChnl = await client.channels.fetch(movieRequest.submissionLogChannelId);
+				const submission = interaction.fields.getTextInputValue('movieRequest');
+				client.formArr.push(interaction.user.id);
+				await submissionChnl.send(`${interaction.user} submitted a movie request: ${submission}`);
+				await interaction.reply({ content: '<a:aRight:978722165832695849> Your movie request was received!', ephemeral: true });
+			}
+		}
 	} catch (error) {
 		console.error(error);
 		await logChannel.send(`<@295227446981033984> An interaction error occurred.\n\`\`\`\n${error}\`\`\``)
@@ -77,6 +126,7 @@ client.on('interactionCreate', async interaction => {
 
 
 client.on('messageCreate', async message => {
+	const logChannel = await client.channels.fetch(logChannelId);
 	try{
 		createThread(message);
 
