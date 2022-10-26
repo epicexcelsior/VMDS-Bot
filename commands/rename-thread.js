@@ -8,7 +8,7 @@ module.exports = {
 			option.setName('new_name')
 				.setDescription('The new name of the thread')
 				.setRequired(true)),
-	async execute(interaction) {
+	async execute(client, interaction) {
 		try {
 			if (!interaction.channel.isThread()) {
 				await interaction.reply({ content:'<a:aWrong:978722165933359174> This command can only be used in thread channels.', ephemeral: true });
