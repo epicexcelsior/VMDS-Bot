@@ -170,7 +170,7 @@ client.on('messageCreate', async message => {
 
 			// Checks if event has started/ended to determine if progress command can be used
 			if (now > client.movieEndTime) {
-				message.channel.send('There is no movie event happening right now.');
+				message.channel.send('<:SadCat:834556643152756767> There is no movie event happening right now.');
 				return;
 			} else if (now < client.movieStartTime) {
 				message.channel.send(`<:PepePopcorn:834556626345787462> The movie event starts <t:${client.movieStartTime}:R>.`);
