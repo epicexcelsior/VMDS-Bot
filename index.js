@@ -13,10 +13,14 @@ dotenv.config();
 
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
 
-// variable used by movie request form later
+// global variables used by movie request form
 client.unix = Math.floor(Date.now() / 1000);
-console.log(client.unix);
 client.formArr = [];
+
+// global variables used by movie progress command
+client.movieStartTime = client.unix;
+client.movieEndTime = client.unix;
+
 
 // Retrieve commands
 client.commands = new Collection();
@@ -68,15 +72,15 @@ client.on('interactionCreate', async interaction => {
 			makeButtons(interaction);
 
 			if (interaction.customId === 'manage-roles') {
+				console.log(`Role manager: ${interaction.user.tag} used manage-roles command`)
 				client.commands.get('manage-roles').execute(interaction)
 					.catch((error) => console.error(error))
 			};
 
 			// Movie request handling
 			if (interaction.customId === 'movieFormButton') {
-				let canRequest = 1; // Can the user fill out the form? (deadline & previous submissions)
 				const timeNow = Math.floor(Date.now() / 1000);
-				console.log(`${interaction.user.tag} clicked movie form button at ${timeNow}`);
+				console.log(`Movie request: ${interaction.user.tag} clicked movie form button at ${timeNow}`);
 
 				// Disable request button
 				// if current unix time is greater than end unix time
@@ -91,13 +95,15 @@ client.on('interactionCreate', async interaction => {
 							.setDisabled(true)
 							.setStyle(ButtonStyle.Success),
 					);
-					await interaction.update({content: `${msg}\n\nThis week's movie request form is closed. Check back soon for next week's request form.`, components: [formButton]});			
+
+					await interaction.update({content: `${msg}\n\nThis week's movie request form is closed. Check back soon for next week's request form.`, components: [formButton]});
+					console.log(`Movie request: ${interaction.user.tag}'s submission closed the movie request form at ${timeNow}`)	
 				} else if (client.formArr.includes(interaction.user.id)) {
-					console.log(`${interaction.user.tag} has already submitted movie request`)
+					console.log(`Movie request: ${interaction.user.tag} has already submitted movie request`)
 					// if user id is already in array of id's, prevent them from submitting again
 					await interaction.reply({ content: '<a:aWrong:978722165933359174> It looks like you have already submitted a movie night request for this week. Please try again next week or contact a moderator if you think this is a mistake.', ephemeral: true });					
 				} else {
-					console.log(`${interaction.user.tag} was shown the movie request form at ${client.unix}`)
+					console.log(`Movie request: ${interaction.user.tag} was shown the movie request form at ${timeNow}`)
 					movieRequestModal(interaction)
 						.catch((error) => console.error(error));
 				}
@@ -113,7 +119,7 @@ client.on('interactionCreate', async interaction => {
 			if (interaction.customId === 'movieModal') {
 				const submissionChnl = await client.channels.fetch(movieRequest.submissionLogChannelId);
 				const submission = interaction.fields.getTextInputValue('movieRequest');
-				client.formArr.push(interaction.user.id);
+				client.formArr.push(interaction.user.id); // add user ID to array, used to check duplicate submissions
 				await submissionChnl.send(`${interaction.user} submitted a movie request: ${submission}`);
 				await interaction.reply({ content: '<a:aRight:978722165832695849> Your movie request was received!', ephemeral: true });
 			}
@@ -131,6 +137,7 @@ client.on('messageCreate', async message => {
 		createThread(message);
 
 		if ((message.content.toLowerCase() === '!rolemanager') && (message.member.roles.cache.has(modId))) {
+			console.log(`Role manager: ${message.author.tag} initiated rolemanager command`)
 			const roleButton = new ActionRowBuilder()
 				.addComponents(
 					new ButtonBuilder()
@@ -153,7 +160,27 @@ client.on('messageCreate', async message => {
 						.setStyle(roleManagerButton.style),
 				);
 			await message.edit({ components: [roleButton] })
+			console.log(`Role manager: get roles button added to message ${message.id}`)
 		};
+
+		// Display movie progress
+		if (message.content === '!progress') {
+			console.log(`Movie progress: ${message.author.tag} initiated movie progress command`);
+			const now = Math.floor(Date.now() / 1000);
+
+			// Checks if event has started/ended to determine if progress command can be used
+			if (now > client.movieEndTime) {
+				message.channel.send('There is no movie event happening right now.');
+				return;
+			} else if (now < client.movieStartTime) {
+				message.channel.send(`<:PepePopcorn:834556626345787462> The movie event starts <t:${client.movieStartTime}:R>.`);
+				return;
+			};
+
+			// To get 2 digits of accurary, multiply by 100 before rounding then divide by 100 after rounding
+			const progress = Math.round((now - client.movieStartTime) / (client.movieEndTime - client.movieStartTime) * 100 * 100) / 100;
+			message.channel.send(`The movie began <t:${client.movieStartTime}:R>\nThe movie ends <t:${client.movieEndTime}:R>\nThe movie is **${progress}%** complete.`);
+		}
 
 		const matches = ['G', 'Ĝ', 'Ğ', 'Ģ', 'Ġ', 'Д', 'Г']
 		if ((message.channel.id === '778325316015882322' || message.channel.id === '779555811923591190')) {

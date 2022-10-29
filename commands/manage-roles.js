@@ -12,6 +12,7 @@ module.exports = {
 		.setName('manage-roles')
         .setDescription('Interactive role selection menu'),
 	async execute(client, interaction) {
+		console.log(`Role manager: ${interaction.user.tag} initiated manage roles command`);
         const row = new ActionRowBuilder()
         for (let i in buttonData) {
             row.addComponents(
@@ -22,6 +23,7 @@ module.exports = {
 					.setStyle(buttonData[i].style),
 			);
         }
-        await interaction.reply({ content: '**Choose a role category**', components: [row], ephemeral: true});
+		console.log(interaction);
+        await interaction.reply({ content: '**Choose a role category**', components: [row], ephemeral: true });
     }
 }

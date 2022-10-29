@@ -9,6 +9,7 @@ module.exports = {
 				.setDescription('The new name of the thread')
 				.setRequired(true)),
 	async execute(client, interaction) {
+		console.log(`Rename threads: ${interaction.user.tag} initiated rename thread command`);
 		try {
 			if (!interaction.channel.isThread()) {
 				await interaction.reply({ content:'<a:aWrong:978722165933359174> This command can only be used in thread channels.', ephemeral: true });

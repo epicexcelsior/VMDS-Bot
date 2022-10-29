@@ -34,7 +34,7 @@ async function createRoleMenu (interaction) {
                 await memberRoles.remove(roleId)
                     .then(() => {
                         removeList.push(role.name)
-                        console.log('Removed', role.name, "role from", interaction.user.tag)
+                        console.log('Role manager: Removed', role.name, "role from", interaction.user.tag)
                     })
                     .catch((error) => {
                         console.error(error)
@@ -44,7 +44,7 @@ async function createRoleMenu (interaction) {
                 await memberRoles.add(roleId)
                     .then(() => {
                         addList.push(role.name)
-                        console.log('Added', role.name, "role to", interaction.user.tag)
+                        console.log('Role manager: Added', role.name, "role to", interaction.user.tag)
                     })
                     .catch((error) => {
                         console.error(error);
@@ -55,7 +55,7 @@ async function createRoleMenu (interaction) {
         if (roleLogging) {
             if (addList.length === 0) { addList = ['none'] };
             if (removeList.length === 0) { removeList = ['none'] };
-            await logChannel.send(`**Updated roles for ${interaction.user.tag} (\`${interaction.user.id}\`) through role manager:**\n<:add:1004649196533600326> Added ${addList.join(', ')}\n<:remove:1004641620253229108> Removed ${removeList.join(', ')}`);
+            await logChannel.send(`Updated roles for ${interaction.user.tag} (\`${interaction.user.id}\`) through role manager:\n<:add:1004649196533600326> Added ${addList.join(', ')}\n<:remove:1004641620253229108> Removed ${removeList.join(', ')}`);
         };
     } catch (error) {
         console.error(error);
