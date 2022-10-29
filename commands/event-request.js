@@ -19,6 +19,7 @@ module.exports = {
                 .setDescription('Enter text to precede announcement text; put \\n for newline (2 are already added)'))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 	async execute(client, interaction) {
+        console.log(`Movie form: ${interaction.user.tag} initiated movie form announcement command`);
         // Defines channels
         const eventChannel = await interaction.guild.channels.fetch(movieRequest.eventChannelId);
 
