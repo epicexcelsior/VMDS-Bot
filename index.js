@@ -170,16 +170,16 @@ client.on('messageCreate', async message => {
 
 			// Checks if event has started/ended to determine if progress command can be used
 			if (now > client.movieEndTime) {
-				message.channel.send('<:SadCat:834556643152756767> There is no movie event happening right now.');
+				message.reply('<:SadCat:834556643152756767> There is no movie event happening right now.');
 				return;
 			} else if (now < client.movieStartTime) {
-				message.channel.send(`<:PepePopcorn:834556626345787462> The movie event starts <t:${client.movieStartTime}:R>.`);
+				message.reply(`<:PepePopcorn:834556626345787462> The movie event starts <t:${client.movieStartTime}:R>.`);
 				return;
 			};
 
 			// To get 2 digits of accurary, multiply by 100 before rounding then divide by 100 after rounding
 			const progress = Math.round((now - client.movieStartTime) / (client.movieEndTime - client.movieStartTime) * 100 * 100) / 100;
-			message.channel.send(`The movie began <t:${client.movieStartTime}:R>.\nThe movie ends <t:${client.movieEndTime}:R>.\nThe movie is **${progress}%** complete (as of <t:${now}:T>).`);
+			message.reply(`The movie began <t:${client.movieStartTime}:R>\nThe movie ends <t:${client.movieEndTime}:R>\nThe movie is **${progress}%** complete.`);
 		}
 
 		const matches = ['G', 'Ĝ', 'Ğ', 'Ģ', 'Ġ', 'Д', 'Г']
