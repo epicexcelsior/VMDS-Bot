@@ -7,8 +7,12 @@ module.exports = {
 		.setName('movie-form')
         .setDescription('Announce movie night request form')
         .addIntegerOption(option =>
-            option.setName('unix_time')
+            option.setName('unix_deadline')
                 .setDescription('Deadline time (in Unix seconds) to submit movie requests')
+                .setRequired(true))
+        .addIntegerOption(option =>
+            option.setName('unix_event_time')
+                .setDescription('Movie event time in Unix seconds')
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('event_link')
@@ -35,11 +39,12 @@ module.exports = {
         let msg; // announcement message to be modified
         const otherText = interaction.options.getString('other_text');
         const eventLink = interaction.options.getString('event_link');  // discord event link
-        client.unix = interaction.options.getInteger('unix_time'); // form deadline time
+        const eventTime = interaction.options.getString('unix_event_time');  // time of movie event
+        client.unix = interaction.options.getInteger('unix_deadline'); // movie request form deadline time
 
         client.formArr = []; // storage for movie request author ids
 
-        const body = `Click the button below to submit a movie request for the next movie night! The form will close <t:${client.unix}:R>.\n${eventLink}\n<@&${movieRequest.pingRole}>`;
+        const body = `Click the button below to submit a movie request for the next movie event!\nThe movie event will be hosted <t:${eventTime}:F> <t:${eventTime}:R>\nThe form will close <t:${client.unix}:R>.\n${eventLink}\n<@&${movieRequest.pingRole}>`;
         otherText ? msg = otherText + '\n\n' + body : msg = body;
 
         await eventChannel.send({ content: msg, components: [formButton]});
