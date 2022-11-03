@@ -7,11 +7,11 @@ module.exports = {
 		.setName('movie-form')
         .setDescription('Announce movie night request form')
         .addIntegerOption(option =>
-            option.setName('unix_deadline')
+            option.setName('form_end_time')
                 .setDescription('Deadline time (in Unix seconds) to submit movie requests')
                 .setRequired(true))
         .addIntegerOption(option =>
-            option.setName('unix_event_time')
+            option.setName('event_time')
                 .setDescription('Movie event time in Unix seconds')
                 .setRequired(true))
         .addStringOption(option =>
@@ -39,8 +39,8 @@ module.exports = {
         let msg; // announcement message to be modified
         const otherText = interaction.options.getString('other_text');
         const eventLink = interaction.options.getString('event_link');  // discord event link
-        const eventTime = interaction.options.getString('unix_event_time');  // time of movie event
-        client.unix = interaction.options.getInteger('unix_deadline'); // movie request form deadline time
+        const eventTime = interaction.options.getString('event_time');  // time of movie event
+        client.unix = interaction.options.getInteger('form_end_time'); // movie request form deadline time
 
         client.formArr = []; // storage for movie request author ids
 
