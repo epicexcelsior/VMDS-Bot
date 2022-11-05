@@ -22,8 +22,6 @@ async function makeButtons (interaction) {
         selectMenuOptions.push(categoryRoles[i]);
     };
 
-    interaction.reply({content: '<a:aRight:978722165832695849> Your roles have been updated!', ephemeral: true});
-
     // // Parses roleData to array to use in button creation
     // const buttonComponents = [];
     // for (let i in roleData[interaction.customId].button) {
