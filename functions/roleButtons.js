@@ -21,16 +21,12 @@ async function makeButtons (interaction) {
         };
         selectMenuOptions.push(categoryRoles[i]);
     };
-
-    interaction.reply({content: '<a:aRight:978722165832695849> Your roles have been updated!', ephemeral: true});
-
     // // Parses roleData to array to use in button creation
     // const buttonComponents = [];
     // for (let i in roleData[interaction.customId].button) {
         // buttonComponents.push(roleData[interaction.customId].button[i]);
     // };
     
-
     const selectMenuRow = new ActionRowBuilder()
         .addComponents(
             new SelectMenuBuilder()
@@ -58,6 +54,7 @@ async function makeButtons (interaction) {
         content: roleData[interaction.customId].menu.message,
         components: [selectMenuRow, buttonRow]
     });
+    interaction.reply({content: '<a:aRight:978722165832695849> Your roles have been updated!', ephemeral: true});
 };
 
 module.exports = {makeButtons}
