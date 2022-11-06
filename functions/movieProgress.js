@@ -13,7 +13,7 @@ async function progress(client, message) {
     // To get 2 digits of accuracy, multiply by 100 before rounding then divide by 100 after rounding
     const progress = Math.round((now - client.movieStartTime) / (client.movieEndTime - client.movieStartTime) * 100 * 100) / 100;
 
-    message.reply(`The movie began <t:${client.movieStartTime}:R>\nThe movie ends <t:${client.movieEndTime}:R>\nThe movie is **${progress}%** complete as of <t:${now}:R>.`);
+    message.reply(`The movie began <t:${client.movieStartTime}:R>\nThe movie ends <t:${client.movieEndTime}:R>\nThe movie is **${progress}%** complete as of <t:${now}:t>.`);
 }
 
 module.exports = {progress};
