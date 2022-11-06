@@ -23,7 +23,7 @@ module.exports = {
         if (!(client.movieStartTime < client.movieEndTime)) {
             await interaction.reply({ content: '🤔 Time doesn\'t go backwards (yet). Please try again.', ephemeral: true });
             console.log('Movie progress: error message sent; End time less than start time.')
-            return;           
+            return;
         }
 
         await interaction.reply({ content: '🍿 Movie times have been set successfully. Enjoy!', ephemeral: true })

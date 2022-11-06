@@ -5,6 +5,8 @@ const { createThread } = require('./functions/threadCreator.js');
 const { makeButtons } = require('./functions/roleButtons.js');
 const { createRoleMenu } = require('./functions/roleMenus.js');
 const { movieRequestModal } = require('./functions/movieRequestModal.js');
+const { progress } = require('./functions/movieProgress.js');
+const { gReactor } = require('./functions/gResponder.js');
 let { formButton } = require('./commands/event-request')
 const dotenv = require('dotenv');
 const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId, movieRequest } = require('./config.js');
@@ -133,7 +135,7 @@ client.on('interactionCreate', async interaction => {
 
 client.on('messageCreate', async message => {
 	const logChannel = await client.channels.fetch(logChannelId);
-	try{
+	try {
 		createThread(message);
 
 		if ((message.content.toLowerCase() === '!rolemanager') && (message.member.roles.cache.has(modId))) {
@@ -166,59 +168,18 @@ client.on('messageCreate', async message => {
 		// Display movie progress
 		if (message.content === '!progress') {
 			console.log(`Movie progress: ${message.author.tag} initiated movie progress command`);
-			const now = Math.floor(Date.now() / 1000);
-
-			// Checks if event has started/ended to determine if progress command can be used
-			if (now > client.movieEndTime) {
-				message.reply('There is no movie event happening right now.');
-				return;
-			} else if (now < client.movieStartTime) {
-				message.reply(`<:PepePopcorn:834556626345787462> The movie event starts <t:${client.movieStartTime}:R>.`);
-				return;
-			};
-
-			// To get 2 digits of accurary, multiply by 100 before rounding then divide by 100 after rounding
-			const progress = Math.round((now - client.movieStartTime) / (client.movieEndTime - client.movieStartTime) * 100 * 100) / 100;
-			message.reply(`The movie began <t:${client.movieStartTime}:R>\nThe movie ends <t:${client.movieEndTime}:R>\nThe movie is **${progress}%** complete as of <t:${now}:>.`);
+			progress(message);
 		}
 
-		const matches = ['G', 'Ĝ', 'Ğ', 'Ģ', 'Ġ', 'Д', 'Г']
-		if ((message.channel.id === '778325316015882322' || message.channel.id === '779555811923591190')) {
-			// To do: Create new module for G checking; Handle message editing
-
-			// switch (message.content) {
-			// 	case 'g':
-			// 		message.react('834556611543564378');
-			// 		break;
-			// 	case 'G':
-			// 	case 'Ĝ':
-			// 	case 'Ğ':
-			// 	case 'Ģ':
-			// 	case 'Ġ':
-			// 	case 'Д':
-			// 	case 'Г':
-			// 		message.react('976178632458395728');
-			// 		break;
-			// 	default:
-			// 		for (let i in matches) {
-			// 			if (message.content.includes(matches[i])) {
-			// 				message.react('976178632458395728');
-			// 			};
-			// 		};
-			// }
-			
-			if (message.content === 'G') {
-				message.react('💩')
-			} else if ((message.content === 'g')) {
-				message.react('834556611543564378')
-			} else if ((message.content.includes('G'))) {
-				message.react('976178632458395728')
-			};
-		};
+		gReactor(message, false);
 	} catch (error) {
 		console.error(error);
 		await logChannel.send(`<@295227446981033984> A message error occurred.\n\`\`\`\n${error}\`\`\``);
 	};
-});0
+})
+
+client.on('messageUpdate', (oldMessage, newMessage) => {
+	gReactor(newMessage, true);
+})
 
 client.login(process.env.TOKEN);
