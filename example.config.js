@@ -10,7 +10,7 @@ module.exports = {
     creationThreadChannels: ["1010786007467176027"],
 
     // Role manager
-    roleLogging: false,
+    roleLogging: true,
     autoRoleChannelId: "1004467208535150687", // Messages sent by bot will have role manager button added
     roleManagerButton: {
         label: 'Get Roles',
@@ -20,8 +20,8 @@ module.exports = {
     },
 
     movieRequest: {
-        eventChannelId: '1007029641241956403',
         submissionLogChannelId: '1032926727036485672',
+        eventChannelId: '1030729098881945611',
         pingRole: '829855953150935093',
     },
 
