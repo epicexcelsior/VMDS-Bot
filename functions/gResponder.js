@@ -1,6 +1,6 @@
 function gReactor(message, edited) {
     const matches = ['G', 'Ĝ', 'Ğ', 'Ģ', 'Ġ', 'Д', 'Г']
-    if ((message.channel.id === '1030729098881945611' || message.channel.id === '779555811923591190')) {
+    if ((message.channel.id === '778325316015882322' || message.channel.id === '779555811923591190')) {
         let hasG = false;
         let scenario = 0;
         for (const i of matches) {
@@ -27,19 +27,19 @@ function gReactor(message, edited) {
         switch (scenario) {
             case 1:
                 message.reactions.removeAll();
-                message.react('1️⃣');
+                message.react('<:DrakeNo:834579267308224512>');
                 break;
             case 2:
                 message.reactions.removeAll();
-                message.react('2️⃣');
+                message.react('<:Facepalm:837206302174085170>');
                 break;
             case 3:
                 message.reactions.removeAll();
-                message.react('3️⃣');
+                message.react('<:FBhug2:910346042040520795>');
                 break;
             case 4:
                 message.reactions.removeAll();
-                const emojis = ['🤔','🍿','👍','🏆','🔸'];
+                const emojis = ['<:BANPAN:1026203906402955305>', '<:HandRight:906778589838581760>', '<a:HaHaHa:977058466113933352>', '<:HandLeft:906778589222023219>'];
                 for (const emoji of emojis) {
                     message.react(emoji);
                 }
