@@ -168,7 +168,7 @@ client.on('messageCreate', async message => {
 		// Display movie progress
 		if (message.content === '!progress') {
 			console.log(`Movie progress: ${message.author.tag} initiated movie progress command`);
-			progress(message);
+			progress(client, message);
 		}
 
 		gReactor(message, false);
