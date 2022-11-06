@@ -1,4 +1,4 @@
-async function progress(message) {
+async function progress(client, message) {
     const now = Math.floor(Date.now() / 1000);
 
     // Checks if event has started/ended to determine if progress command can be used
