@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, PermissionFlagsBits } = require('discord.js');
 const { movieRequest } = require('../config.js');
-const { movieRequestModal } = require('../functions/movieRequestModal');
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -16,11 +15,11 @@ module.exports = {
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('event_link')
-                .setDescription('Enter URL for Discord event')
+                .setDescription('Discord event URL')
                 .setRequired(true))
         .addStringOption(option =>
             option.setName('other_text')
-                .setDescription('Enter text to precede announcement text; put \\n for newline (2 are already added)'))
+                .setDescription('Text to precede announcement text; put \\n for newline (2 are already added)'))
         .setDefaultMemberPermissions(PermissionFlagsBits.ManageGuild),
 	async execute(client, interaction) {
         console.log(`Movie form: ${interaction.user.tag} initiated movie form announcement command`);
