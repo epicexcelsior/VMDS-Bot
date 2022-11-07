@@ -7,7 +7,7 @@ const { createRoleMenu } = require('./functions/roleMenus.js');
 const { movieRequestModal } = require('./functions/movieRequestModal.js');
 const { progress } = require('./functions/movieProgress.js');
 const { gReactor } = require('./functions/gResponder.js');
-let { formButton } = require('./commands/event-request')
+let { formButton } = require('./commands/movie-form.js')
 const dotenv = require('dotenv');
 const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId, movieRequest } = require('./config.js');
 
@@ -98,6 +98,7 @@ client.on('interactionCreate', async interaction => {
 							.setStyle(ButtonStyle.Success),
 					);
 
+					// Update movie request message
 					await interaction.update({content: `${msg}\n\nThis week's movie request form is closed. Check back soon for next week's request form.`, components: [formButton]});
 					console.log(`Movie request: ${interaction.user.tag}'s submission closed the movie request form at ${timeNow}`)	
 				} else if (client.formArr.includes(interaction.user.id)) {
