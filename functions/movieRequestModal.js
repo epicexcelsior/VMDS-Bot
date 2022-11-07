@@ -8,7 +8,7 @@ async function movieRequestModal (interaction) {
 
     const movieInput = new TextInputBuilder()
         .setCustomId('movieRequest')
-        .setLabel("Enter your movie request. Please make sure that the movie is available online.")
+        .setLabel("Enter your movie request.")
         .setPlaceholder("Enter movie title and trailer link")
         .setMinLength(1)
         .setMaxLength(200)
