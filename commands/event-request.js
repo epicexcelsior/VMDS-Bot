@@ -39,7 +39,7 @@ module.exports = {
         let msg; // announcement message to be modified
         const otherText = interaction.options.getString('other_text');
         const eventLink = interaction.options.getString('event_link');  // discord event link
-        const eventTime = interaction.options.getString('event_time');  // time of movie event
+        const eventTime = interaction.options.getInteger('event_time');  // time of movie event
         client.unix = interaction.options.getInteger('form_end_time'); // movie request form deadline time
 
         client.formArr = []; // storage for movie request author ids
