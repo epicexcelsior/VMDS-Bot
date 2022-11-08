@@ -11,7 +11,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('manage-roles')
         .setDescription('Interactive role selection menu'),
-	async execute(interaction) {
+	async execute(client, interaction) {
 		console.log(`Role manager: ${interaction.user.tag} initiated manage roles command`);
         const row = new ActionRowBuilder()
         for (let i in buttonData) {

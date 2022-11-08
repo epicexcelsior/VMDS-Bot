@@ -75,7 +75,7 @@ client.on('interactionCreate', async interaction => {
 
 			if (interaction.customId === 'manage-roles') {
 				console.log(`Role manager: ${interaction.user.tag} used manage-roles command`)
-				client.commands.get('manage-roles').execute(interaction)
+				client.commands.get('manage-roles').execute(client, interaction)
 					.catch((error) => console.error(error))
 			};
 
