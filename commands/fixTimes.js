@@ -3,6 +3,7 @@ const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName('fix-times')
+        .setDescription('Fix the movie form end time')
         .addIntegerOption(option =>
             option.setName('end_unix')
                 .setDescription('end time of movie in Unix seconds')
