@@ -99,7 +99,9 @@ client.on('interactionCreate', async interaction => {
 					);
 
 					// Update movie request message
+					const submissionChnl = await client.channels.fetch(movieRequest.submissionLogChannelId);
 					await interaction.update({content: `${msg}\n\nThis week's movie request form is closed. Check back soon for next week's request form.`, components: [formButton]});
+					await submissionChnl.send(`<@&${modId}> The movie request form is closed. It's time to start the movie poll.`);
 					console.log(`Movie request: ${interaction.user.tag}'s submission closed the movie request form at ${timeNow}`)	
 				} else if (client.formArr.includes(interaction.user.id)) {
 					console.log(`Movie request: ${interaction.user.tag} has already submitted movie request`)
