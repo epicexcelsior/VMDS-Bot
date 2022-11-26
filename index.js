@@ -169,7 +169,7 @@ client.on('messageCreate', async message => {
 		};
 
 		// Display movie progress
-		if (message.content === '!progress') {
+		if (message.content.startsWith('!progress')) {
 			console.log(`Movie progress: ${message.author.tag} initiated movie progress command`);
 			progress(client, message);
 		}
@@ -181,8 +181,13 @@ client.on('messageCreate', async message => {
 	};
 })
 
-client.on('messageUpdate', (oldMessage, newMessage) => {
-	gReactor(newMessage, true);
+client.on('messageUpdate', async (oldMessage, newMessage) => {
+	try {
+		gReactor(newMessage, true);
+	} catch {
+		console.error(error);
+		await logChannel.send(`<@295227446981033984> A message error occurred.\n\`\`\`\n${error}\`\`\``);
+	}
 })
 
 client.login(process.env.TOKEN);
