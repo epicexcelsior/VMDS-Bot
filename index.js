@@ -106,7 +106,7 @@ client.on('interactionCreate', async interaction => {
 				} else if (client.formArr.includes(interaction.user.id)) {
 					console.log(`Movie request: ${interaction.user.tag} has already submitted movie request`)
 					// if user id is already in array of id's, prevent them from submitting again
-					await interaction.reply({ content: '<a:aWrong:978722165933359174> It looks like you have already submitted a movie night request for this week. Please try again next week or contact a moderator if you think this is a mistake.', ephemeral: true });					
+					await interaction.reply({ content: '<a:aWrong:978722165933359174> It looks like you have already submitted a movie request for this week. Please try again next week or contact a moderator if you think this is a mistake.', ephemeral: true });					
 				} else {
 					console.log(`Movie request: ${interaction.user.tag} was shown the movie request form at ${timeNow}`)
 					movieRequestModal(interaction)
