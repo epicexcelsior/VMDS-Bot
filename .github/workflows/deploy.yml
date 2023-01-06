@@ -1,0 +1,20 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add private key to SSH agent
+        uses: webfactory/ssh-agent@v0.3.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Deploy to VPS
+        run: |
+          ssh user@${{ secrets.VPS_IP_ADDRESS }} "cd /path/to/project && git pull"
+          ssh user@vps_ip_address "cd /path/to/project && npm install"
+          ssh user@vps_ip_address "cd /path/to/project && npm start"
