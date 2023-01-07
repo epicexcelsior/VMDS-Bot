@@ -15,4 +15,9 @@ jobs:
           host: ${{ secrets.VPS_IP_ADDRESS }}
           username: root
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: whoami
+          script_stop: true
+          script:
+            cd /root/vmds-bot-dev && git fetch --all && git checkout --force "origin/dev" && npm install && node deploy-commands.js && pm2 restart 'VMDS-Bot-Dev'
+
+
+
