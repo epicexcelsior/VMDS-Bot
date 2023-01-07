@@ -1,0 +1,22 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Execute SSH
+        uses: appleboy/ssh-action@v0.1.6
+        with:
+          host: ${{ secrets.VPS_IP_ADDRESS }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            PATH=$PATH:/root/.nvm/versions/node/v16.16.0/bin
+            cd /root/vmds-bot && git fetch --all && git checkout --force "origin/main" && npm install && node deploy-commands.js && pm2 restart 'VMDS-Bot'
+
