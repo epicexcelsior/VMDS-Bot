@@ -9,11 +9,10 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Add private key to SSH agent
-        uses: webfactory/ssh-agent@v0.7.0
+      - name: Execute SSH
+        uses: appleboy/ssh-action@v0.1.6
         with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-          ssh-known-hosts: known_hosts
-      - name: Deploy to VPS
-        run: |
-          ssh root@149.28.44.188 "cd /root/vmds-bot-dev && git fetch --all && git checkout --force "origin/dev" && npm install && node deploy-commands.js && pm2 restart 'VMDS-Bot-Dev'"
+          host: ${{ secrets.VPS_IP_ADDRESS }}
+          username: root
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: whoami
