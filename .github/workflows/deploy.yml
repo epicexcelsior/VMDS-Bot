@@ -15,4 +15,4 @@ jobs:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Deploy to VPS
         run: |
-          ssh user@${{ secrets.IP_ADDRESS }} "cd /root/vmds-bot-dev && git fetch --all && git checkout --force "origin/dev" && npm install && node deploy-commands.js && pm2 restart 'VMDS-Bot-Dev'"
+          ssh root@${{ secrets.IP_ADDRESS }} "cd /root/vmds-bot-dev && git fetch --all && git checkout --force "origin/dev" && npm install && node deploy-commands.js && pm2 restart 'VMDS-Bot-Dev'"
