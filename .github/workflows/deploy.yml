@@ -18,6 +18,7 @@ jobs:
           script_stop: true
           script: |
             whoami
+            PATH=$PATH:/root/.nvm/versions/node/v16.16.0/bin/pm2
             cd /root/vmds-bot-dev && git fetch --all && git checkout --force "origin/dev" && npm install && node deploy-commands.js && pm2 restart 'VMDS-Bot-Dev'
 
 
