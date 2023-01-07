@@ -24,15 +24,15 @@ async function progress(client, message) {
 
     let count = 0;
     for (let i = 0; i < full; i++) {
-        msg += '<:full:1054925583651459082>';
+        msg += '<:full:1061144310608830494>';
         count++;
     }
     if (half >= parts / 2) {
-        msg += '<:half:1054925442710241390>';
+        msg += '<:half:1061144129251332227>';
         count++;
     }
     for (let i = 0; i < total-count; i++) {
-        msg += '• • ';
+        msg += '<:empty:1061413486170747001>';
     }
 
     message.reply(msg);
