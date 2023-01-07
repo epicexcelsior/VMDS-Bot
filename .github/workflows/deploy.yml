@@ -13,7 +13,7 @@ jobs:
         run: |
           echo "IP_ADDRESS=${{ secrets.VPS_IP_ADDRESS }}" >> $GITHUB_ENV
       - name: Add private key to SSH agent
-        uses: webfactory/ssh-agent@v0.3.0
+        uses: webfactory/ssh-agent@v0.7.0
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Deploy to VPS
