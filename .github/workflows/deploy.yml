@@ -12,11 +12,10 @@ jobs:
       - name: Define env variables
         run: |
           echo "IP_ADDRESS=${{ secrets.VPS_IP_ADDRESS }}" >> $GITHUB_ENV
-          echo ${{ env.SSH_KEY }} | base64 -d > id_rsa
       - name: Add private key to SSH agent
         uses: webfactory/ssh-agent@v0.3.0
         with:
-          ssh-private-key: id_rsa
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
       - name: Deploy to VPS
         run: |
           ssh user@IP_ADDRESS "cd /root/vmds-bot-dev && git fetch --all && git checkout --force "origin/dev" && npm install && node deploy-commands.js && pm2 restart 'VMDS-Bot-Dev'"
