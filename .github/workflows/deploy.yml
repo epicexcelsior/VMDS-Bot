@@ -1,0 +1,18 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add private key to SSH agent
+        uses: webfactory/ssh-agent@v0.3.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+      - name: Deploy to VPS
+        run: |
+          ssh user@${{ secrets.VPS_IP_ADDRESS }} "cd /root/vmds-bot-dev && git fetch --all && git checkout --force "origin/dev" && npm install && node deploy-commands.js && pm2 restart 'VMDS-Bot-Dev'"
