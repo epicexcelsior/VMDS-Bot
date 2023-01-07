@@ -2,7 +2,7 @@ async function progress(client, message) {
     const now = Math.floor(Date.now() / 1000);
     let msg;
 
-    message.reply('Test');
+    message.channel.send('Test');
     // Checks if event has started/ended to determine if progress command can be used
     if (now > client.movieEndTime) {
         message.reply('<:SadCat:834556643152756767> There is no movie event happening right now.');
