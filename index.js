@@ -123,9 +123,13 @@ client.on('interactionCreate', async interaction => {
 		if (interaction.isModalSubmit()) {
 			if (interaction.customId === 'movieModal') {
 				const submissionChnl = await client.channels.fetch(movieRequest.submissionLogChannelId);
-				const submission = interaction.fields.getTextInputValue('movieRequest');
+
+				// Get modal input
+				const movieTitle = interaction.fields.getTextInputValue('movieTitle');
+				const movieTrailer = interaction.fields.getTextInputValue('movieTrailer');
+
 				client.formArr.push(interaction.user.id); // add user ID to array, used to check duplicate submissions
-				await submissionChnl.send(`${interaction.user} submitted a movie request: ${submission}`);
+				await submissionChnl.send(`${interaction.user} submitted a movie request:\nTitle: ${movieTitle}\nTrailer: ${movieTrailer}`);
 				await interaction.reply({ content: '<a:aRight:978722165832695849> Your movie request was received!', ephemeral: true });
 			}
 		}
