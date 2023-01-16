@@ -2,23 +2,39 @@ const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle } = req
 
 
 async function movieRequestModal (interaction) {
-    const form = new ModalBuilder()
-        .setCustomId('movieModal')
-        .setTitle('Movie Request Form');
+    try {
+        const form = new ModalBuilder()
+            .setCustomId('movieModal')
+            .setTitle('Movie Request Form');
 
-    const movieInput = new TextInputBuilder()
-        .setCustomId('movieRequest')
-        .setLabel("Enter the movie title and trailer link")
-        .setPlaceholder("Enter the movie title and trailer link")
-        .setMinLength(1)
-        .setMaxLength(200)
-        .setRequired(true)
-        .setStyle(TextInputStyle.Short);
+        // First field - Movie title
+        const titleInput = new TextInputBuilder()
+            .setCustomId('movieTitle')
+            .setLabel("Movie title")
+            .setPlaceholder("Enter the movie's title")
+            .setMinLength(1)
+            .setMaxLength(200)
+            .setRequired(true)
+            .setStyle(TextInputStyle.Short);
 
-    const firstRow = new ActionRowBuilder().addComponents(movieInput);
-    form.addComponents(firstRow);
+        // Second field - Movie trailer
+        const trailerInput = new TextInputBuilder()
+            .setCustomId('movieTrailer')
+            .setLabel("Movie trailer")
+            .setPlaceholder("Enter the movie's trailer link (YouTube)")
+            .setMinLength(1)
+            .setMaxLength(200)
+            .setRequired(true)
+            .setStyle(TextInputStyle.Short);
 
-    await interaction.showModal(form);
+        const firstRow = new ActionRowBuilder().addComponents(titleInput);
+        const secondRow = new ActionRowBuilder().addComponents(trailerInput);
+        form.addComponents(firstRow, secondRow);
+
+        await interaction.showModal(form);
+    } catch {
+        console.log('[MOVIE EVENTS] Failed to create/display movie modal')
+    }
 }
 
 module.exports = {movieRequestModal};
