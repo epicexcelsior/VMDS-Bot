@@ -8,6 +8,7 @@ for (let i in roleData) {
 };
 
 async function makeButtons (interaction) {
+    // Only accept interactions from role-manager-related buttons
     if (!(validButtonIds.includes(interaction.customId))) return;
     
     try {
@@ -29,7 +30,6 @@ async function makeButtons (interaction) {
             // buttonComponents.push(roleData[interaction.customId].button[i]);
         // };
         
-
         const selectMenuRow = new ActionRowBuilder()
             .addComponents(
                 new SelectMenuBuilder()
@@ -43,14 +43,21 @@ async function makeButtons (interaction) {
             );
         
         const buttonRow = new ActionRowBuilder()
+        let disabled = false;
         for (let i in buttonData) {
+            // If the clicked button is a role category button, disable it when recreating button row (since they're already on the page)
+            if (interaction.customId === buttonData[i].customId) disabled = true;
+
             buttonRow.addComponents(
                 new ButtonBuilder()
                     .setCustomId(buttonData[i].customId)
                     .setLabel(buttonData[i].label)
                     .setEmoji(buttonData[i].emoji)
-                    .setStyle(buttonData[i].style),
+                    .setStyle(buttonData[i].style)
+                    .setDisabled(disabled),
             );
+
+            disabled = false; // Re-enable button
         }
 
         await interaction.update({

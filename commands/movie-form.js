@@ -44,7 +44,9 @@ module.exports = {
 
             client.formArr = []; // storage for movie request author ids
 
-            const body = `Click the button below to submit a movie request for the next movie event.\nThe movie event will be hosted **<t:${eventTime}:F> <t:${eventTime}:R>.**\nThis form will close <t:${client.unix}:R>.\n${eventLink}\n<@&${movieRequest.pingRole}>`;
+            const body = `Click the button below to submit a movie request for the next movie event. See the pinned messages for movies that have already been shown.\nThe movie event will be hosted **<t:${eventTime}:F> <t:${eventTime}:R>.**\nThis form will close <t:${client.unix}:R>.\n${eventLink}\n<@&${movieRequest.pingRole}>`;
+            
+            // If additional text has been added, append two newlines and then the message body
             otherText ? msg = otherText + '\n\n' + body : msg = body;
 
             await eventChannel.send({ content: msg, components: [formButton]});
