@@ -23,6 +23,7 @@ module.exports = {
         submissionLogChannelId: '1032926727036485672',
         eventChannelId: '1030729098881945611',
         pingRole: '829855953150935093',
+        movieChannelId: '1075926852239102103',
     },
 
     // button.customId MUST match the category name
