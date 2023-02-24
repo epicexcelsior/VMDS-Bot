@@ -41,6 +41,7 @@ module.exports = {
                 channel: movieChannel,
                 description: `Vexento and Baba are hosting a movie event!\nSee <#${movieRequest.eventChannelId}> to request or vote for this week's movie.`
             })
+            const eventLink = await event.url;  // discord event link
 
             // Create request button object
             let formButton = new ActionRowBuilder()
