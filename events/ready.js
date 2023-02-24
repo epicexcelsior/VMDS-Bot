@@ -1,3 +1,5 @@
+const {guildId} = require('../config')
+
 module.exports = {
     name: 'ready',
     once: true,

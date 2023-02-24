@@ -13,7 +13,7 @@ const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId, mov
 
 dotenv.config();
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] });
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildScheduledEvents] });
 
 // global variables used by movie request form
 client.unix = Math.floor(Date.now() / 1000);
@@ -116,7 +116,7 @@ client.on('interactionCreate', async interaction => {
 		};
 
 		// Select menu interactions
-		if (interaction.isSelectMenu()) {
+		if (interaction.isStringSelectMenu()) {
 			createRoleMenu(interaction);
 		};
 
