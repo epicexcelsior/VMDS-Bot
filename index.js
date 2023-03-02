@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits, Message, MessageFlags, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, ButtonStyle, SlashCommandSubcommandGroupBuilder } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { createThread } = require('./functions/threadCreator.js');
 const { makeButtons } = require('./functions/roleButtons.js');
 const { createRoleMenu } = require('./functions/roleMenus.js');
@@ -22,7 +22,6 @@ client.formArr = [];
 // global variables used by movie progress command
 client.movieStartTime = client.unix;
 client.movieEndTime = client.unix;
-
 
 // Retrieve commands
 client.commands = new Collection();
@@ -50,6 +49,12 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
+
+const targetChannel = client.channels.fetch('1004280176961658982');
+setInterval(() => {
+	targetChannel.name = '😁Test name'
+	console.log('Hello World!');
+}, 3600000);
 
 
 client.on('interactionCreate', async interaction => {
