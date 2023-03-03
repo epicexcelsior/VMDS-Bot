@@ -1,10 +1,11 @@
-const { changeName } = require('../functions/changeName')
+const { changeName } = require('../functions/changeName');
+const { animalChannelId } = require('../config.js');
 
 module.exports = {
     name: 'ready',
     once: true,
     execute(client) {
         console.log(`Logged in as ${client.user.tag}`);
-        changeName(client, '941175740999798814');
+        changeName(client, animalChannelId);
     }
 }

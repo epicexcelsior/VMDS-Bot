@@ -53,7 +53,6 @@ for (const file of eventFiles) {
 
 client.on('interactionCreate', async interaction => {
 	const logChannel = await client.channels.fetch(logChannelId);
-	console.log(logChannel);
 	try{
 		// Slash commands
 		if (interaction.isCommand()) {

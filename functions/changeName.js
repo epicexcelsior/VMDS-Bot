@@ -1,23 +1,28 @@
+// Changes the #animals channel emoji to a different animal on a daily basis
+
 async function changeName(client, channelId) {
 	const channel = await client.channels.fetch(channelId);
 
-    const animalEmojis = ['🐕', '🐈', '🐁', '🐹', '🐇', '🦊', '🐻', '🐵', '🐸', '🐖', '🐄', '🐅', '🐨', '🐔', '🐧', '🐦', '🐤', '🦆', '🦅', '🦉', '🐺', '🦇', '🐗', '🐎', '🦄', '🐛', '🦋', '🐌', '🦗', '🕷️', '🐢', '🐍', '🦎', '🦕', '🦂', '🐙', '🦑', '🦀', '🐠', '🐟', '🦓', '🐆', '🐊', '🦈', '🐋', '🐬', '🦭', '🦍', '🦧', '🐘', '🦣', '🦬', '🦛', '🐪', '🦒', '🦘', '🐃', '🐂', '🐏', '🦙', '🐐', '🦌', '🐩',
-    '🐈', '🦩', '🦢', '🦜', '🦚', '🦤', '🦃', '🐓', '🐿️', '🦔', '🦝', '🦨', '🦡', '🦫', '🦦', '🦥', '🐀', '🐉']
-    console.log(animalEmojis.length)
-
+    const animalEmojis = ['🐕', '🐈', '🐁', '🐹', '🐇', '🦊', '🐻', '🐵',
+	'🐸', '🐖', '🐄', '🐅', '🐨', '🐔', '🐧', '🐦', '🐤', '🦆', '🦅',
+	'🦉', '🐺', '🦇', '🐗', '🐎', '🦄', '🐛', '🦋', '🐌', '🦗', '🕷️',
+	'🐢', '🐍', '🦎', '🦕', '🦂', '🐙', '🦑', '🦀', '🐠', '🐟', '🦓',
+	'🐆', '🐊', '🦈', '🐋', '🐬', '🦭', '🦍', '🦧', '🐘', '🦣', '🦬',
+	'🦛', '🐪', '🦒', '🦘', '🐃', '🐂', '🐏', '🦙', '🐐', '🦌', '🐩',
+    '🐈', '🦩', '🦢', '🦜', '🦚', '🦤', '🦃', '🐓', '🐿️', '🦔', '🦝',
+	'🦨', '🦡', '🦫', '🦦', '🦥', '🐀', '🐉']
 
     let num = 0;
-	setInterval(() => {
-	  channel.setName(`new-channel-${num}`)
-		.then(updatedChannel => {
-		  console.log(`Changed channel name to ${updatedChannel.name}`);
-		})
-		.catch(console.error);
-
-        let emoji = Math.floor(Math.random() * animalEmojis.length);
-        emoji = animalEmojis[emoji];
+	setInterval(async () => {
+		let emoji = Math.floor(Math.random() * animalEmojis.length);
+		emoji = animalEmojis[emoji];
+		await channel.edit({name: `${emoji}animals`})
+			.then(updatedChannel => {
+				console.log(`Changed animal channel name to ${updatedChannel.name}`);
+			})
+			.catch(console.error);
 
         num += 1;
-	}, 1000);
+	}, 1800000);
 }
 module.exports = { changeName };
