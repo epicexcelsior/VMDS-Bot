@@ -7,6 +7,7 @@ const { createRoleMenu } = require('./functions/roleMenus.js');
 const { movieRequestModal } = require('./functions/movieRequestModal.js');
 const { progress } = require('./functions/movieProgress.js');
 const { gReactor } = require('./functions/gResponder.js');
+//const { changeName } = require('./functions/changeName.js')
 let { formButton } = require('./commands/movie-form.js')
 const dotenv = require('dotenv');
 const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId, movieRequest } = require('./config.js');
@@ -50,15 +51,9 @@ for (const file of eventFiles) {
 	}
 }
 
-const targetChannel = client.channels.fetch('1004280176961658982');
-setInterval(() => {
-	targetChannel.name = '😁Test name'
-	console.log('Hello World!');
-}, 3600000);
-
-
 client.on('interactionCreate', async interaction => {
 	const logChannel = await client.channels.fetch(logChannelId);
+	console.log(logChannel);
 	try{
 		// Slash commands
 		if (interaction.isCommand()) {
@@ -145,6 +140,8 @@ client.on('interactionCreate', async interaction => {
 
 client.on('messageCreate', async message => {
 	const logChannel = await client.channels.fetch(logChannelId);
+	console.log(`Log channel is: ${logChannel}`)
+	console.log(logChannel);
 	try {
 		createThread(message);
 
