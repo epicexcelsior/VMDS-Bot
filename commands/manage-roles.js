@@ -23,7 +23,6 @@ module.exports = {
 					.setStyle(buttonData[i].style),
 			);
         }
-		console.log(interaction);
         await interaction.reply({ content: '**Choose a role category**', components: [row], ephemeral: true });
     }
 }

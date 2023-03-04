@@ -1,12 +1,13 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits, Message, MessageFlags, ActionRowBuilder, ButtonBuilder, SelectMenuBuilder, ButtonStyle, SlashCommandSubcommandGroupBuilder } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
 const { createThread } = require('./functions/threadCreator.js');
 const { makeButtons } = require('./functions/roleButtons.js');
 const { createRoleMenu } = require('./functions/roleMenus.js');
 const { movieRequestModal } = require('./functions/movieRequestModal.js');
 const { progress } = require('./functions/movieProgress.js');
 const { gReactor } = require('./functions/gResponder.js');
+//const { changeName } = require('./functions/changeName.js')
 let { formButton } = require('./commands/movie-form.js')
 const dotenv = require('dotenv');
 const { clientId, logChannelId, autoRoleChannelId, roleManagerButton, modId, movieRequest } = require('./config.js');
@@ -22,7 +23,6 @@ client.formArr = [];
 // global variables used by movie progress command
 client.movieStartTime = client.unix;
 client.movieEndTime = client.unix;
-
 
 // Retrieve commands
 client.commands = new Collection();
@@ -50,7 +50,6 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-
 
 client.on('interactionCreate', async interaction => {
 	const logChannel = await client.channels.fetch(logChannelId);
@@ -142,6 +141,8 @@ client.on('interactionCreate', async interaction => {
 
 client.on('messageCreate', async message => {
 	const logChannel = await client.channels.fetch(logChannelId);
+	console.log(`Log channel is: ${logChannel}`)
+	console.log(logChannel);
 	try {
 		createThread(message);
 
