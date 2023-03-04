@@ -23,6 +23,6 @@ async function changeName(client, channelId) {
 			.catch(console.error);
 
         num += 1;
-	}, 3600000);
+	}, 86400000);
 }
 module.exports = { changeName };
