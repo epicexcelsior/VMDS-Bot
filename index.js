@@ -140,7 +140,6 @@ client.on('interactionCreate', async interaction => {
 client.on('messageCreate', async message => {
 	const logChannel = await client.channels.fetch(logChannelId);
 	console.log(`Log channel is: ${logChannel}`)
-	console.log(logChannel);
 	try {
 		createThread(message);
 
