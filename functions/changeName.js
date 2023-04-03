@@ -11,9 +11,9 @@ async function changeName(client, channelId) {
 	'🦛', '🐪', '🦒', '🦘', '🐃', '🐂', '🐏', '🦙', '🐐', '🦌', '🐩',
     '🐈', '🦩', '🦢', '🦜', '🦚', '🦤', '🦃', '🐓', '🐿️', '🦔', '🦝',
 	'🦨', '🦡', '🦫', '🦦', '🦥', '🐀', '🐉']
-
-    let num = 0;
-	setInterval(async () => {
+	
+	let num = 0;
+	async function changeEmoji() {
 		let emoji = Math.floor(Math.random() * animalEmojis.length);
 		emoji = animalEmojis[emoji];
 		await channel.edit({name: `${emoji}animals`})
@@ -23,6 +23,15 @@ async function changeName(client, channelId) {
 			.catch(console.error);
 
         num += 1;
+<<<<<<< Updated upstream
 	}, 172800000);
+=======
+	}
+
+	changeEmoji();
+	setInterval(async () => {
+		changeEmoji();
+	}, 432000000);
+>>>>>>> Stashed changes
 }
 module.exports = { changeName };
