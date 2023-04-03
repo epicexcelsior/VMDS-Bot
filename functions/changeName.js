@@ -23,15 +23,11 @@ async function changeName(client, channelId) {
 			.catch(console.error);
 
         num += 1;
-<<<<<<< Updated upstream
-	}, 172800000);
-=======
 	}
 
 	changeEmoji();
 	setInterval(async () => {
 		changeEmoji();
 	}, 432000000);
->>>>>>> Stashed changes
 }
 module.exports = { changeName };
